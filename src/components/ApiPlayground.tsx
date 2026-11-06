@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../styles.css";
 
-const BASE_URL = "https://taxonic-api.contactous.com";
+const BASE_URL = "https://api.usetaxonic.com";
 const ENDPOINT = "/v1/classify";
 
 type Tab = "authorization" | "body" | "headers";

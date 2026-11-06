@@ -34,7 +34,7 @@ info:
 
     The supplied collection also includes a BISAC21 example."
 servers:
-  - url: https://YOUR-PRODUCTION-API-HOST
+  - url: https://api.usetaxonic.com
     description: Production server
 tags:
   - name: Classification
