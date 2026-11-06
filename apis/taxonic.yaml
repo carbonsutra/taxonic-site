@@ -1,0 +1,229 @@
+openapi: 3.1.0
+info:
+  title: Taxonic API
+  version: 1.0.0
+  description:
+    "## High-Throughput Classification Engine for Books & Educational Assets.
+
+
+    Taxonic converts unstructured text—such as book titles, academic course names, syllabus excerpts, and digital
+    learning assets—into standardized subject codes across publishing and higher education taxonomies.
+
+
+    Taxonic is an API-first classification engine driven by local dense vector embeddings and indexing. It is designed
+    for academic publishers, university registrars, libraries, edtech platforms, and digital book distributors.
+
+
+    The service maps unstructured content metadata to classification standards including HECoS, BISAC, THEMA, Dewey
+    Decimal Classification, LCSH, and UNSPSC.
+
+
+    ### Standards listed in the supplied collection
+
+
+    | Standard | Description |
+
+    | --- | --- |
+
+    | `LCSH` | Library of Congress Subject Heading, October 2026 |
+
+    | `THEMA` | The subject category scheme for a global book trade, version 1.7 |
+
+    | `HECOS` | Higher Education Classification of Subjects, version 9.0 |
+
+
+    The supplied collection also includes a BISAC21 example."
+servers:
+  - url: https://YOUR-PRODUCTION-API-HOST
+    description: Production server
+tags:
+  - name: Classification
+    description: Subject classification operations.
+paths:
+  /classify:
+    post:
+      tags:
+        - Classification
+      summary: Classify a book or educational asset
+      operationId: classifyAsset
+      description:
+        Classifies an asset using its title and optional descriptive metadata. The request body is the
+        primary input shown in the supplied Postman collection. Optional query parameters are also documented because
+        they are present in that collection.
+      security:
+        - TaxonicApiKey: []
+      parameters:
+        - name: title
+          in: query
+          required: false
+          description: Primary title of the asset.
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          description: Description, tagline, or metadata that helps in categorisation.
+          schema:
+            type: string
+        - name: standard
+          in: query
+          required: false
+          description: Standard for classification.
+          schema:
+            type: string
+            example: hecos26
+        - name: code_prefix
+          in: query
+          required: false
+          description: Prefix to narrow search results.
+          schema:
+            type: string
+            example: "101"
+        - name: max_results
+          in: query
+          required: false
+          description: "Maximum number of returned results. Default: 5."
+          schema:
+            type: integer
+            minimum: 1
+            default: 5
+        - name: min_score
+          in: query
+          required: false
+          description: "Minimum confidence score of Taxonic's algorithm. Default: 0.35."
+          schema:
+            type: number
+            minimum: 0
+            maximum: 1
+            default: 0.35
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - standard
+              properties:
+                title:
+                  type: string
+                  description: Primary title of the asset.
+                  example: 50 Algorithms of Complex Computations
+                description:
+                  type: string
+                  description: Description, tagline, or metadata of the asset.
+                  example: For Bachelors and Technical Degrees
+                standard:
+                  type: string
+                  description: Classification standard identifier.
+                  example: hecos26
+                code_prefix:
+                  type: string
+                  description: Optional prefix to narrow search results.
+                  example: "101"
+                max_results:
+                  type: integer
+                  minimum: 1
+                  default: 5
+                  example: 3
+                min_score:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.35
+                  example: 0.2
+            examples:
+              HECoS:
+                summary: Classify using HECoS
+                value:
+                  title: 50 Algorithms of Complex Computations
+                  description: For Bachelors and Technical Degrees
+                  standard: hecos26
+                  code_prefix: "101"
+                  max_results: 3
+                  min_score: 0.2
+              BISAC:
+                summary: Classify using BISAC21
+                value:
+                  title: 50 Algorithms of Complex Computations
+                  description: For Bachelors and Technical Degrees
+                  standard: bisac21
+                  code_prefix: ""
+                  max_results: 5
+                  min_score: 0.35
+      responses:
+        "200":
+          description: Classification completed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: 5 matches with score >= 0.35.
+                  request_id:
+                    type: string
+                    example: 8cb3bbf289014da48be2f8e86531951c
+                  standard:
+                    type: string
+                    example: BISAC21
+                  match_count:
+                    type: integer
+                    example: 5
+                  matches:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: MAT040000
+                        definition:
+                          type: string
+                          example: Mathematics / Complex Analysis
+                        score:
+                          type: number
+                          format: float
+                          example: 0.5433
+              example:
+                status: 200
+                message: 5 matches with score >= 0.35.
+                request_id: 8cb3bbf289014da48be2f8e86531951c
+                standard: BISAC21
+                match_count: 5
+                matches:
+                  - code: MAT040000
+                    definition: Mathematics / Complex Analysis
+                    score: 0.5433
+                  - code: COM051300
+                    definition: Computers / Programming / Algorithms
+                    score: 0.5085
+                  - code: COM023000
+                    definition: Computers / Educational Software
+                    score: 0.449
+                  - code: COM077000
+                    definition: Computers / Mathematical & Statistical Software
+                    score: 0.4458
+                  - code: COM025000
+                    definition: Computers / Artificial Intelligence / Expert Systems
+                    score: 0.4438
+        "401":
+          description: Missing or invalid API key.
+        "403":
+          description: API key is not authorized for this operation.
+        "422":
+          description: Request validation failed.
+        "500":
+          description: Internal server error.
+components:
+  securitySchemes:
+    TaxonicApiKey:
+      type: apiKey
+      in: header
+      name: X-Taxonic-API-Key
+      description: Enter your Taxonic API key. Do not commit secrets to the documentation repository.
