@@ -32,7 +32,7 @@ export default function LandingPage() {
 
             <p className="mb-2 max-w-2xl text-base leading-relaxed text-slate-700 dark:text-slate-100 sm:text-lg">
               The Automated Cataloging Engine for Publishers, Libraries, and
-              EdTech
+              EdTech.
             </p>
 
             <p className="mb-2 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base sm:leading-8">
@@ -69,13 +69,13 @@ export default function LandingPage() {
 
             <div className="mt-7 flex flex-wrap items-center gap-4 sm:gap-5">
               <a
-                href="/api"
+                href="/api-playground"
                 className="inline-flex min-h-12 items-center justify-center gap-3 rounded-lg border border-cyan-400/60 bg-gradient-to-r from-blue-500/15 to-emerald-400/15 px-5 py-3 text-sm font-semibold text-cyan-800 dark:text-cyan-100 transition hover:-translate-y-0.5 hover:border-emerald-400 sm:px-6"
               >
-                Explore APIs <span className="text-xl"></span>
+                Try Now <span className="text-xl"></span>
               </a>
               <span className="text-sm font-semibold text-slate-600 dark:text-slate-300">
-                or
+                
               </span>
 
               <a

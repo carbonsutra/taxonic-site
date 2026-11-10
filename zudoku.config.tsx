@@ -21,29 +21,28 @@ const config: ZudokuConfig = {
     },
   },
   metadata: {
-    title: "Carbon Emission Estimation API and Calculators for Organizations",
+    title: "Taxonic ::  Automated Cataloging Engine for Publishers, Libraries, and EdTech.",
     description:
-      "Carbon footprint estimation for business travel, global hotel stays, vehicles usage, freight, eCommerce, shipments, fuel and electricity with supplementary APIs on airports and clustering results.",
+      "High-throughput classification engine for publishers, libraries, and EdTech. Standardize unstructured content to THEMA, HECoS, and LCSH.",
     favicon: "images/taxonic-favicon.ico",
-    applicationName: "CarbonSutra Carbon Emission Estimation API",
+    applicationName: "Classification Engine for Books & Educational Assets",
     keywords: [
-      "api",
-      "climate",
-      "carbon",
-      "emission",
-      "footprint",
-      "estimation",
-      "accounting",
-      "SEFR",
-      "travel",
-      "hotel",
-      "electricity",
-      "vehicles",
-      "ecommerce",
-      "fuel",
-      "freight",
-      "shipment",
-      "airports",
+      "Automated bibliographic classification", 
+      "THEMA subject code generator", 
+      "LCSH auto-cataloging software", 
+      "HECoS subject mapping API", 
+      "Book metadata enrichment tool", 
+      "AI library cataloging engine", 
+      "Google Sheets classification formula", 
+      "Bulk ONIX metadata standardization", 
+      "Academic syllabus classification API", 
+      "Semantic metadata tagging engine", 
+      "Publisher backlist categorization tool", 
+      "Automated subject indexing", 
+      "DDC number building automation", 
+      "Dewey", 
+      "Library of Congress", 
+      "Metadata enrichment for EdTech",
     ],
     creator: "Manish Sharma",
   },
@@ -120,11 +119,11 @@ const config: ZudokuConfig = {
       ],
     },
     ***/
-
     {
-      type: "link",
-      label: "Reference",
-      to: "/api",
+      type: "doc",
+      path: "/demo",
+      file: "pages/demo",
+      label: "Demo",
     },
 
     {
@@ -132,6 +131,14 @@ const config: ZudokuConfig = {
       label: "Trial",
       to: "/api-playground",
     },
+
+    {
+      type: "link",
+      label: "Reference",
+      to: "/api",
+    },
+
+
 
     {
       type: "doc",

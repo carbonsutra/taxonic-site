@@ -1,49 +1,81 @@
-# Frequently Asked Questions (FAQ)
+---
+title: Frequently Asked Questions (FAQ)
+description: Answers to Frequently Asked Questions on Taxonic
+toc: false
+fullWidth: true
+showLastModified: false
+disable_pager: true
+---
 
-Explore everything you need to know about Taxonic - from semantic classification and supported taxonomy standards to Google Sheets integration, REST API usage, API keys, pricing, and troubleshooting. Find quick answers and practical guidance to help you get the most out of Taxonic.
+Answers to common questions on Taxonic - from semantic classification and supported taxonomy standards to Google Sheets integration, REST API usage, API keys, pricing, and troubleshooting.
 
 ---
 
 ## General & Core Concepts
 
+
 <details>
   <summary>What is Taxonic and what primary problem does it solve?</summary>
 
-Taxonic is an automated semantic classification engine built for academic publishers, libraries, bookstores, and EdTech platforms. It converts raw, unstructured text—such as book titles, academic course names, syllabus excerpts, and digital learning assets—into official taxonomy subject codes (such as THEMA, LCSH, and HECoS) in under 0.5 seconds per item.
+ 
+Taxonic is a classification engine built for academic publishers, libraries, bookstores, and EdTech platforms. It converts raw, unstructured text such as book titles, academic course name and any associated metadata, keywords or description into official taxonomy subject codes (such as THEMA, LCSH, and HECoS). 
 
-Manual tagging traditionally takes catalogers and librarians 15 to 45 minutes per record, costing organizations $10 to $25 per title. Taxonic eliminates this bottleneck by automating subject classification at high speed with over 99% cost reduction.
-
+Manual tagging traditionally takes catalogers and librarians 15 to 45 minutes per record, costing organizations $10 to $25 per title. Taxonic eliminates this bottleneck by automating subject classification at high speed with over 95% cost reduction.
+ 
 </details>
+
+
 
 <details>
   <summary>Who is Taxonic designed for?</summary>
 
+ 
 Taxonic is designed for anyone managing bibliographic metadata or educational content catalogs:
 
-- **Librarians & Technical Services Leads:** Clear cataloging backlogs and generate accurate call numbers and subject headings.
-- **Publishers & Backlist Managers:** Enrich backlist catalogs with modern THEMA/BISAC subject codes to prevent retail feed rejections and boost e-commerce discoverability.
-- **EdTech & Learning Platforms:** Automatically tag digital courseware, syllabi, and assets against higher-education frameworks like HECoS.
-- **Bookstores & Distributors:** Normalize incoming publisher feeds directly into storefront category nodes.
-
+- **Librarians & Technical Services Leads:** - to clear cataloging backlogs and generate accurate call numbers and subject headings.
+- **Publishers & Backlist Managers:** -  for enriching backlist catalogs with modern THEMA/BISAC subject codes to prevent retail feed rejections and boost e-commerce discoverability.
+- **EdTech & Learning Platforms:** - for automatically tagging digital courseware, syllabi, and assets against higher-education frameworks like HECoS.
+- **Bookstores & Distributors:** - in normalizing incoming publisher feeds directly into storefront category nodes.
+ 
 </details>
+
+
 <details>
-  <summary>How does Taxonic differ from traditional keyword search or generic AI (e.g., ChatGPT)?</summary>
+  <summary>How does Taxonic differ from traditional keyword search or generic AI?</summary>
 
-Generic keyword search fails when titles use natural language instead of taxonomy terms (e.g., matching "Pottery Techniques" to "Ceramic Artefacts"). Generic LLMs, on the other hand, frequently hallucinate invalid, out-of-date, or non-existent taxonomy codes.
+ 
+Generic keyword search fails when titles use natural language instead of taxonomy terms (e.g., matching "Pottery Techniques" to "Ceramic Artefacts"). Generic LLMs, on the other hand, can tend to hallucinate invalid, out-of-date, or non-existent taxonomy codes if they are not trained on latest databases.
 
-Taxonic combines local dense vector embeddings (BAAI/bge-m3) with deterministic, ontology-validated taxonomy schemas. It understands the deep contextual meaning of text while guaranteeing that every returned subject code strictly exists within the official taxonomy standard.
-
+Taxonic combines vector embeddings algorithms with deterministic, ontology-validated taxonomy schemas. It understands the deep contextual meaning of text while guaranteeing that every returned subject code strictly exists within the official taxonomy standard.
+ 
 </details>
+
+
+
+
 <details>
-  <summary>What content inputs can Taxonic process?</summary>
+  <summary>How can I use Taxonic in my environment?</summary>
 
-Taxonic can classify:
+ 
 
-- Book titles and subtitles
-- Back-cover blurbs, abstracts, and summaries
-- Academic course names and degree module descriptions
-- Syllabus excerpts and learning object summaries
-- Messy, unformatted metadata strings from legacy CSV/XML feeds
+Taxonic is designed to be used in your own spreadsheets irrespective of their design and formats. 90% of our users take this route. Just call a function and it will catgorise the text. This can be done by a spreadsheet user with minimum help needed. 
+
+If your institution has its own digital asset management system, Taxonic can be integrated into it through an easy API which is well documented on this site. 
+
+ 
+</details>
+
+
+
+<details>
+  <summary>What data preparation is needed for using Taxonic?</summary>
+ 
+- First, make sure that the taxonomy standard is supported by Taxonic. These are listed here in this FAQ. If your desired standard is not supported then ask us and we will prioritise it. 
+- Next, the title of the book, periodical, academic paper. This is an important input. If you add the susbtitle to it, then it is acceptable. 
+- Last, there isa description of that title. Here you can add any meta information like Back-cover blurbs, abstracts, keywords or summaries. This text could be unformatted and unstructured.  
+
+That's it!
+ 
 
 ---
 
@@ -56,8 +88,8 @@ Taxonic can classify:
 
 Taxonic operates directly inside Google Sheets via a custom spreadsheet formula, requiring zero software installation or technical training.
 
-1. Open your spreadsheet containing titles and metadata.
-2. Enter your assigned API Key in the sidebar or formula settings.
+1. Open your spreadsheet containing titles and (optional) metadata.
+2. Enter your assigned API Key in the sidebar or formula settings. You can embed the key within the formula itself - while that is not a recommended way but it is the fasted route if you are testing Taxonic's output.
 3. Type the custom formula in any empty cell: `=TAXONIC(A2, B2, "THEMA")` (where `A2` is the title and `B2` is an optional description).
 4. Press **Enter**. Taxonic populates the official code and definition instantly.
 
@@ -114,7 +146,7 @@ X-Taxonic-API-Key: YOUR_API_KEY
   "description": "For Bachelors and Technical Degrees",
   "standard": "hecos",
   "code_prefix": "101",
-  "max_results": 2,
+  "max_results": 1,
   "min_score": 0.5
 }
 ```
@@ -153,7 +185,7 @@ Yes. Taxonic natively supports structured function calling schemas (OpenAI Tools
         "description": { "type": "string" },
         "standard": {
           "type": "string",
-          "enum": ["hecos", "thema", "lcsh", "bisac", "dewey"]
+          "enum": ["hecos", "thema", "lcsh"]
         }
       },
       "required": ["title", "standard"]
@@ -178,9 +210,6 @@ Taxonic indexes major global standards across publishing, libraries, and higher 
 | `lcsh`       | Library of Congress Subject Headings               | Academic, Research, & Public Libraries              |
 | `thema`      | THEMA Subject Scheme (v1.7)                        | Global International Book Trade & Retail Publishing |
 | `hecos`      | Higher Education Classification of Subjects (v9.0) | University Accreditation, Syllabi, & Coursework     |
-| `bisac`      | BISAC Subject Headings                             | North American Retail Publishing                    |
-| `dewey`      | Dewey Decimal Classification (DDC)                 | Public & School Libraries                           |
-| `unspsc`     | UN Standard Products & Services Code               | Educational Procurement & Supply Chain              |
 
 </details>
 <details>
@@ -193,7 +222,7 @@ Taxonic indexes major global standards across publishing, libraries, and higher 
 <details>
   <summary>Is the confidence score a probability percentage?</summary>
 
-No. The confidence score is a normalized mathematical cosine similarity vector metric between `0.0` and `1.0`. A score of `0.60+` indicates high semantic relevance in most taxonomy standards.
+No. The confidence score is a normalized mathematical metric between `0.0` and `1.0`. A score of `0.60+` indicates high semantic relevance in most taxonomy standards.
 
 </details>
 <details>
@@ -212,16 +241,19 @@ Taxonic maintains pre-indexed vector stores for standard releases. When a standa
 
 You can obtain an API Key in two ways:
 
-1. **Directly from Us:** Request an enterprise or pilot key directly through the Taxonic Developer Portal.
+1. **Directly:** You can get a trial key for 100 requests from the 'Try' section of the website.  
 2. **API Marketplaces:** Subscribe through API marketplaces such as **RapidAPI**, which provides instant key generation, usage tracking, and flexible monthly subscription tiers.
 
 </details>
+
+
 <details> 
 <summary>Can I test Taxonic at no cost before purchasing?</summary>
 
 Yes. Taxonic provides a free trial quota allowing you to test classification live in your own Google Sheets or via cURL/Python API calls without any upfront commitment or credit card requirement.
 
 </details>
+
 <details>
   <summary>How is usage measured and billed?</summary>
 
@@ -246,15 +278,12 @@ Taxonic returns standard HTTP error codes formatted according to the **RFC 9457 
   "title": "Standard Not Found",
   "status": 404,
   "error_code": "STANDARD_NOT_FOUND",
-  "detail": "Standard 'INVALID_STD' is not indexed. Available standards: HECOS, THEMA, LCSH, BISAC, DEWEY.",
+  "detail": "Standard 'INVALID_STD' is not indexed. Available standards: HECOS, THEMA, LCSH.",
   "instance": "/v1/classify",
   "request_id": "18f0d878b65f4929ac5a96d1294e72d2"
 }
 ```
-
-</details>
-<details>
-  <summary>Common HTTP Error Codes Reference</summary>
+**Common HTTP Error Codes Reference**
 
 | Status Code             | Error Code                            | Common Cause                                           | Resolution                                                              |
 | :---------------------- | :------------------------------------ | :----------------------------------------------------- | :---------------------------------------------------------------------- |
@@ -264,6 +293,7 @@ Taxonic returns standard HTTP error codes formatted according to the **RFC 9457 
 | **`503 Unavailable`**   | `SERVICE_UNAVAILABLE`                 | Index initializing or server busy.                     | Retry request with exponential backoff.                                 |
 
 </details>
+
 <details>
   <summary>How does Taxonic handle extremely short or ambiguous titles?</summary>
 
@@ -273,6 +303,6 @@ When given very short titles (e.g., "Algebra"), Taxonic returns candidates with 
 <details>
   <summary>Where can I get developer support or request custom taxonomy indexing?</summary>
 
-For technical support, custom taxonomy indexing requests, or enterprise SLA inquiries, contact our engineering team directly at **support@taxonic.ai** or reach out through your RapidAPI developer dashboard.
+For technical support, custom taxonomy indexing requests, or enterprise SLA inquiries, contact our engineering team directly at **support@contactous.com** or reach out through your RapidAPI developer dashboard.
 
 </details>

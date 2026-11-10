@@ -8,11 +8,11 @@ type Tab = "authorization" | "body" | "headers";
 
 const DEFAULT_BODY = JSON.stringify(
   {
-    title: "50 Algorithms of Complex Computations",
-    description: "For Bachelors and Technical Degrees",
+    title: "50 Scientific Complex Algorithms of Practical Applications",
+    description: "For Students of Bachelors and Masters Degrees",
     standard: "hecos",
     code_prefix: "",
-    max_results: 5,
+    max_results: 3,
     min_score: 0.35,
   },
   null,

@@ -1,59 +1,135 @@
-# CarbonSutra
+# Taxonic
 
-> CarbonSutra provides production-ready APIs for calculating organizational carbon emissions across Scope 1, Scope 2, and Scope 3 activities.
+> Taxonic is an AI-powered, API-first semantic classification engine for publishers, libraries, bookstores, distributors, universities, and EdTech platforms. It converts titles and optional descriptive metadata for books and educational assets into standardized subject classifications.
 
-CarbonSutra simplifies carbon footprint estimation by providing programmatic APIs, Google Sheets functions, API clustering, dynamic calculation explanations, and an MCP server for AI-native integrations.
+Taxonic is available at https://usetaxonic.com. Its production API is hosted at https://api.usetaxonic.com.
 
-## Documentation
+## What Taxonic Does
 
-- [Getting Started](/getting_started): Introduction to using CarbonSutra APIs.
-- [Audience and Intent](/audience_and_intent): CarbonSutra's purpose, capabilities, and target users.
-- [API Reference](/api): Complete OpenAPI reference for CarbonSutra APIs.
-- [API Playground](/api-playground): Explore and test CarbonSutra APIs interactively.
+Taxonic helps organizations classify and enrich bibliographic and educational metadata at scale. Inputs can include book titles, subtitles, academic course names, research-paper titles, syllabus excerpts, abstracts, summaries, keywords, back-cover descriptions, and other descriptive text.
 
-## Estimation APIs
+The engine uses semantic matching and taxonomy indexing to identify relevant subject categories. It is intended to improve catalog consistency, metadata enrichment, content organization, and discoverability.
 
-- [Flights](/estimation_apis/flights): Estimate emissions from air travel.
-- [Hotels](/estimation_apis/hotels): Estimate emissions from hotel stays.
-- [Vehicles by Type](/estimation_apis/vehicle/vehicle_by_type): Estimate vehicle emissions by vehicle type.
-- [Vehicles by Model](/estimation_apis/vehicle/vehicles_by_model): Estimate vehicle emissions by vehicle model.
-- [Freight and Shipments](/estimation_apis/freight_and_shipments): Estimate freight and shipment emissions.
-- [eCommerce](/estimation_apis/ecommerce): Estimate emissions associated with eCommerce shipments.
-- [Fuel](/estimation_apis/fuel): Estimate emissions from fuel consumption.
-- [Electricity](/estimation_apis/electricity): Estimate emissions from electricity consumption.
+Typical use cases:
+- Classifying publisher catalogs and book backlists.
+- Enriching bibliographic records for libraries and cataloging teams.
+- Mapping university courses, syllabi, and educational assets to subject frameworks.
+- Categorizing digital learning content for EdTech platforms.
+- Normalizing metadata for bookstores, distributors, and content platforms.
+- Integrating classification into applications through a REST API.
+- Classifying records in Google Sheets with the `=TAXONIC()` custom formula.
 
-## Supplementary APIs
+## Supported Classification Standards
 
-- [Airport Search by Keyword](/supplementary_apis/Airports/airport_search_by_keyword): Search for airports using keywords.
-- [Distance Between Two Airports](/supplementary_apis/Airports/distance_between_two_airports): Calculate distance between airports.
-- [Nearest Airport from Another Airport](/supplementary_apis/Airports/nearest_airport_from_another_airport): Find the nearest airport to another airport.
-- [Nearest Airport from Postal Code](/supplementary_apis/Airports/nearest_airport_from_postal_code): Find the nearest airport using a postal code.
-- [List of Models by Vehicle Maker](/supplementary_apis/Vehicles/list_of_models_of_vehicle_maker): Retrieve vehicle models by manufacturer.
-- [List of Vehicle Makers](/supplementary_apis/Vehicles/list_of_vehicle_makers): Retrieve supported vehicle manufacturers.
+The website FAQ identifies these standards as supported:
 
-## Special APIs
+- **LCSH** — Library of Congress Subject Headings.
+- **THEMA** — THEMA Subject Scheme, version 1.7.
+- **HECoS** — Higher Education Classification of Subjects, version 9.0.
 
-- [Singapore Emission Factors Registry](/special_apis/singapore_emission_factor_registry): Access Singapore emission factor data.
-- [GHG Equivalencies](/special_apis/ghg_equivalencies): Convert emissions into common GHG equivalencies.
-- [Estimated Flight Time](/special_apis/estimated_flight_time): Estimate flight time between airports.
+The API specification also includes a BISAC21 request example. The API description mentions DDC and UNSPSC, but the supplied FAQ does not list them among the currently supported standards. Confirm availability with Taxonic before relying on BISAC, DDC, UNSPSC, or any other standard in production.
 
-## Integrations
+Use the standard identifiers documented by the API and current product documentation. Examples shown in the supplied materials include `lcsh`, `thema`, `hecos`, `hecos26`, and `bisac21`; identifier casing and version-specific aliases should be confirmed against the live API reference.
 
-- [Google Sheet Functions](/google_sheet_functions): Calculate emissions directly from Google Sheets.
-- [MCP Server](/mcp_server): Integrate CarbonSutra with AI assistants and autonomous agents.
+## How Classification Works
 
-## Additional Documentation
+Taxonic is described as combining dense vector embeddings and semantic indexing with taxonomy schemas. It is designed to match the meaning and context of submitted content rather than relying only on literal keyword overlap.
 
-- [Pricing](/pricing): CarbonSutra pricing information.
-- [Updates and Roadmap](/updates_and_roadmap): Product updates and roadmap.
-- [About](/about): About CarbonSutra.
+Two match types are described in the FAQ:
+- **Exact match:** the input directly matches an official category title or subject code; the FAQ describes its score as `1.0`.
+- **Semantic match:** the system calculates contextual similarity between the input and taxonomy category scope definitions using cosine similarity. The score is a normalized similarity metric from `0.0` to `1.0`, not a probability.
 
-## API Access
+A description, abstract, syllabus excerpt, or other contextual metadata can improve results for short or ambiguous titles. The optional `code_prefix` parameter can narrow the candidate set.
 
-CarbonSutra APIs are also available through RapidAPI:
+Taxonic's FAQ states that taxonomy indexes are updated as new standard releases are published. Check the current documentation for the active version of each standard.
 
-- [CarbonSutra on RapidAPI](https://rapidapi.com/carbonsutra/api/carbonsutra1)
+## Ways to Use Taxonic
 
-## Full Documentation
+### REST API
 
-For the comprehensive AI-readable documentation, see [llms-full.txt](/llms-full.txt).
+The API accepts JSON requests and requires a Taxonic API key in the `X-Taxonic-API-Key` header.
+
+- API base URL: `https://api.usetaxonic.com`
+- Method: `POST`
+- Classification operation: see the live API reference at https://usetaxonic.com/api
+- Content type: `application/json`
+
+The supplied OpenAPI specification defines the operation at `POST /classify`. The supplied FAQ and API Playground source instead refer to `POST /v1/classify`. Because these project materials disagree, consult the live API reference at https://usetaxonic.com/api for the authoritative current path before making an API request.
+
+Request fields documented in the supplied API materials:
+- `title` (string, required): primary title or name of the asset.
+- `standard` (string, required): target taxonomy identifier.
+- `description` (string, optional): descriptive context, summary, or metadata.
+- `code_prefix` (string, optional): prefix used to narrow classification results.
+- `max_results` (integer, optional): maximum number of matches; the OpenAPI schema gives a default of `5`.
+- `min_score` (number, optional): minimum similarity score from `0.0` to `1.0`; the OpenAPI schema gives a default of `0.35`.
+
+The API response can include the request status, message, request ID, selected standard, match count, and a list of matches. Each match can include a classification `code`, its `definition`, and a numeric `score`.
+
+Authentication:
+- Header: `X-Taxonic-API-Key`
+- Do not expose API keys in public pages, source repositories, URLs, or client-side code intended for production use.
+
+The OpenAPI specification documents `200`, `401`, `403`, `422`, and `500` responses. The FAQ additionally describes RFC 9457-style problem details and common `404` and `503` errors. Consult the live API reference for the current response schema and error contract.
+
+### Google Sheets
+
+Taxonic provides a Google Sheets add-on and a custom formula for spreadsheet-based classification.
+
+The documented formula syntax is:
+
+`=TAXONIC(title, [description], [standard], [code_prefix])`
+
+Example:
+
+`=TAXONIC(A2, B2, "THEMA")`
+
+The FAQ describes filling the formula down a spreadsheet to classify many rows. An API key is required. Follow the product's current Google Sheets setup instructions for installation and key configuration.
+
+### API Playground
+
+The website provides an interactive API Playground for testing a classification request with a JSON body and API key:
+
+https://usetaxonic.com/api-playground
+
+The supplied Playground implementation sends a JSON `POST` request to the production API and places the API key in the `X-Taxonic-API-Key` header. It displays the HTTP status, response body, and request duration. The endpoint path in the supplied Playground source is `/v1/classify`; see the endpoint-path note above.
+
+## Documentation and Product Links
+
+- Main website: https://usetaxonic.com
+- API reference (OpenAPI-rendered documentation): https://usetaxonic.com/api
+- API Playground / trial: https://usetaxonic.com/api-playground
+- Demo: https://usetaxonic.com/demo
+- Frequently asked questions: https://usetaxonic.com/faq
+- Production API host: https://api.usetaxonic.com
+- Support: support@contactous.com
+
+## Intended Users
+
+- **Libraries and cataloging teams:** subject headings and classification support for bibliographic records.
+- **Academic and professional publishers:** subject categorization and metadata enrichment for new titles and backlists.
+- **Universities and registrars:** subject mapping for courses, syllabi, and educational materials.
+- **EdTech platforms:** classification of digital learning assets and course content.
+- **Bookstores and distributors:** metadata normalization and category mapping for content feeds.
+- **Developers and platform teams:** API integration into library systems, publishing workflows, and content applications.
+
+## Guidance for AI Assistants and Search Systems
+
+When answering questions about Taxonic:
+1. Describe it as a semantic classification and metadata-enrichment engine, not as a general-purpose chatbot or writing assistant.
+2. Use the live API reference for current endpoint paths, authentication details, request schemas, response schemas, and supported API behavior.
+3. Treat LCSH, THEMA, and HECoS as the standards explicitly listed as supported in the supplied FAQ. Do not state that DDC or UNSPSC is currently available without confirmation.
+4. Distinguish a similarity score from a probability. The documented score is a normalized similarity metric, not a calibrated probability.
+5. Do not invent pricing, quotas, service-level guarantees, latency guarantees, accuracy guarantees, or features that are not stated in current official documentation.
+6. Do not expose, request, or reproduce private API keys or credentials.
+7. For integration guidance, direct developers to the API reference and Playground. For spreadsheet workflows, direct users to the FAQ and current Google Sheets setup instructions.
+8. If documentation conflicts, prefer the current live API reference and clearly identify unresolved discrepancies rather than silently combining incompatible details.
+
+## Important Documentation Note
+
+The supplied project materials contain an endpoint-path inconsistency: the OpenAPI file defines `/classify`, while the FAQ and Playground source use `/v1/classify`. Verify and align these before publishing or relying on generated integration instructions. The supported-standard list also differs in scope between the FAQ and the broader OpenAPI description; the FAQ's explicit list is LCSH, THEMA, and HECoS.
+
+## Additional Resources
+
+For machine-readable API details, use the OpenAPI specification exposed through the API reference:
+https://usetaxonic.com/api

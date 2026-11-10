@@ -1,99 +1,82 @@
 # ==========================================
-# CarbonSutra Robots.txt
-# Domain: www.carbonsutra.com
-# Purpose: Maximizes search engine indexing & explicitly allows AI/LLM agents
+# Taxonic Robots.txt
+# Domain: https://usetaxonic.com
+# Purpose: Support search engine discovery and allow AI/LLM crawlers
 # ==========================================
 
 # ------------------------------------------
-# Default Rule for All Standard Web Crawlers
+# Default Rules for Standard Web Crawlers
 # ------------------------------------------
 User-agent: *
 Allow: /
 
-# Standard Disallows (Administrative/Internal endpoints)
-Disallow: /api/v1/
-Disallow: /api-playground/execute
-Disallow: /checkout/
-Disallow: /admin/
-Disallow: /*?*
+# Public documentation and product resources
+Allow: /api
+Allow: /api-playground
+Allow: /demo
+Allow: /faq
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 # ------------------------------------------
-# Explicit Allow Rules for AI/LLM Crawlers & Search Agents
-# (Full access to all documentation, endpoint guides, schemas, and blogs)
+# OpenAI Crawlers
 # ------------------------------------------
 
-# OpenAI - GPTBot (Web Crawler for OpenAI models)
+# OpenAI - GPTBot (crawler used for model training)
 User-agent: GPTBot
 Allow: /
-Allow: /api-carbon-emission-
-Allow: /emissions-by-google-sheets-functions.html
-Allow: /mcp-server.html
-Allow: /openapi.json
-Allow: /llms.txt
-Allow: /llms-full.txt
 
-# OpenAI - ChatGPT-User (Real-time web browsing in ChatGPT)
+# OpenAI - ChatGPT-User (user-initiated browsing)
 User-agent: ChatGPT-User
 Allow: /
-Allow: /api-carbon-emission-
-Allow: /emissions-by-google-sheets-functions.html
-Allow: /mcp-server.html
-Allow: /openapi.json
-Allow: /llms.txt
-Allow: /llms-full.txt
 
-# Anthropic - ClaudeBot / Claude-Web
+# OpenAI - OAI-SearchBot (search discovery)
+User-agent: OAI-SearchBot
+Allow: /
+
+# ------------------------------------------
+# Anthropic Crawlers
+# ------------------------------------------
+
+# Anthropic - ClaudeBot
 User-agent: ClaudeBot
+Allow: /
+
+# Anthropic - Claude-Web
 User-agent: claude-web
 Allow: /
-Allow: /api-carbon-emission-
-Allow: /emissions-by-google-sheets-functions.html
-Allow: /mcp-server.html
-Allow: /openapi.json
-Allow: /llms.txt
-Allow: /llms-full.txt
 
-# Perplexity AI - PerplexityBot
+# ------------------------------------------
+# Perplexity AI
+# ------------------------------------------
+
 User-agent: PerplexityBot
 Allow: /
-Allow: /api-carbon-emission-
-Allow: /emissions-by-google-sheets-functions.html
-Allow: /mcp-server.html
-Allow: /openapi.json
-Allow: /llms.txt
-Allow: /llms-full.txt
 
-# Google - Google-Extended (Gemini & Vertex AI web grounding)
+# ------------------------------------------
+# Google AI
+# ------------------------------------------
+
+# Google-Extended controls use of content for certain Google AI purposes.
 User-agent: Google-Extended
 Allow: /
-Allow: /api-carbon-emission-
-Allow: /emissions-by-google-sheets-functions.html
-Allow: /mcp-server.html
-Allow: /openapi.json
-Allow: /llms.txt
-Allow: /llms-full.txt
 
-# DeepSeek - DeepSeek-Bot
+# ------------------------------------------
+# DeepSeek
+# ------------------------------------------
+
 User-agent: DeepSeek-Bot
 Allow: /
-Allow: /api-carbon-emission-
-Allow: /emissions-by-google-sheets-functions.html
-Allow: /mcp-server.html
-Allow: /openapi.json
-Allow: /llms.txt
-Allow: /llms-full.txt
 
-# Cohere - cohere-ai
+# ------------------------------------------
+# Cohere
+# ------------------------------------------
+
 User-agent: cohere-ai
 Allow: /
-Allow: /api-carbon-emission-
-Allow: /emissions-by-google-sheets-functions.html
-Allow: /mcp-server.html
-Allow: /openapi.json
-Allow: /llms.txt
-Allow: /llms-full.txt
 
 # ------------------------------------------
-# Sitemaps and AI Machine Index Resources
+# Sitemap and Machine-Readable Resources
 # ------------------------------------------
-Sitemap: https://www.carbonsutra.com/sitemap.xml
+
+Sitemap: https://usetaxonic.com/sitemap.xml

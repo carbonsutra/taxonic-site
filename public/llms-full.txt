@@ -1,392 +1,476 @@
-# CarbonSutra
+# Taxonic — Full Product and Developer Reference
 
-> CarbonSutra is an API-first carbon emissions estimation platform designed to simplify greenhouse gas emissions calculations for organizations, developers, sustainability teams, and AI applications.
+> Taxonic is an automated semantic classification engine for publishers, libraries, bookstores, distributors, universities, and EdTech platforms. It converts unstructured text and descriptive metadata for books and educational assets into standardized subject classifications.
 
-## Overview
+- Product website: https://usetaxonic.com
+- Production API host: https://api.usetaxonic.com
+- API reference: https://usetaxonic.com/api
+- API Playground / trial: https://usetaxonic.com/api-playground
+- Demo: https://usetaxonic.com/demo
+- FAQ: https://usetaxonic.com/faq
+- Support email: support@contactous.com
+- Company named in the website footer: Contactous Pte Ltd.
 
-CarbonSutra provides programmatic tools for estimating carbon emissions across common business activities.
+## 1. Product Overview
 
-The platform supports calculations covering:
+Taxonic is an automated cataloging and classification engine. It accepts unstructured content metadata—such as book titles, academic course names, syllabus excerpts, research-paper titles, and digital learning asset descriptions—and maps that content to subject codes in classification taxonomies.
 
-- Scope 1 emissions
-- Scope 2 emissions
-- Scope 3 emissions
-- Business air travel
-- Hotel stays
-- Vehicle usage
-- Freight and shipments
-- eCommerce shipments
-- Fuel consumption
-- Electricity consumption
+The product is intended to reduce the manual effort involved in subject tagging and metadata normalization. The supplied landing page describes a workflow that can be used by editorial staff and catalogers through Google Sheets, or integrated into enterprise software and library or publishing systems through a REST API.
 
-CarbonSutra is designed to remove the complexity of manually implementing emissions calculations, sourcing conversion factors, resolving logistics information, and maintaining calculation methodologies.
+Taxonic is positioned as a semantic classification system rather than a general-purpose chatbot, writing assistant, or simple keyword lookup tool.
 
-## Core Capabilities
+### Input content
 
-### Production-Ready APIs
+Inputs may include:
+- Book or asset title.
+- Subtitle.
+- Academic course name.
+- Research-paper title.
+- Syllabus excerpt.
+- Description or tagline.
+- Back-cover blurb.
+- Abstract.
+- Summary.
+- Keywords.
+- Other associated metadata.
 
-CarbonSutra exposes REST APIs for calculating emissions from operational activity data.
+The title is the primary input. Descriptive context is optional but can help disambiguate short or broad titles.
 
-The APIs can be integrated into:
+### Output
 
-- Enterprise applications
-- ESG platforms
-- Sustainability dashboards
-- Travel management systems
-- Logistics platforms
-- Procurement systems
-- ERP systems
-- eCommerce applications
-- Internal carbon accounting tools
-- AI agents and assistants
+The API returns candidate taxonomy matches. A match can contain:
+- `code`: the classification code.
+- `definition`: the label or scope description associated with the code.
+- `score`: a numeric matching score.
 
-The complete API specification is available in the API Reference.
+The response can also include status information, a message, request ID, selected standard, and match count.
 
-[API Reference](/api)
+## 2. Intended Users and Use Cases
 
-## Estimation APIs
+### Libraries and cataloging teams
+Use Taxonic to support subject classification and metadata enrichment for bibliographic records and cataloging workflows.
 
-### Flights
+### Publishers and backlist managers
+Use Taxonic to categorize titles and enrich publisher metadata with subject codes for catalog and distribution workflows.
 
-The Flights API calculates carbon emissions associated with air travel.
+### Universities and registrars
+Use Taxonic to map courses, syllabi, and educational materials to higher-education subject frameworks.
 
-It can be used for:
+### EdTech and learning platforms
+Use Taxonic to classify digital courseware, syllabus content, and learning assets.
 
-- Business travel
-- Employee travel
-- Corporate travel reporting
-- Travel management platforms
-- Scope 3 business travel calculations
+### Bookstores and distributors
+Use Taxonic to normalize incoming publisher metadata and map content to storefront categories.
 
-[Flights API](/estimation_apis/flights)
+### Developers and platform teams
+Integrate Taxonic into library services platforms, publishing applications, content management systems, and other digital asset workflows through the REST API.
 
-### Hotels
+## 3. Classification Standards
 
-The Hotels API estimates emissions associated with hotel stays.
+The supplied FAQ explicitly identifies the following as currently supported standards:
 
-[Hotels API](/estimation_apis/hotels)
+| Identifier shown in FAQ | Standard | Version / description | Primary use described |
+| --- | --- | --- | --- |
+| `lcsh` | Library of Congress Subject Headings (LCSH) | Library subject headings | Academic, research, and public libraries |
+| `thema` | THEMA Subject Scheme | Version 1.7 | Global book trade and retail publishing |
+| `hecos` | Higher Education Classification of Subjects (HECoS) | Version 9.0 | University accreditation, syllabi, and coursework |
 
-### Vehicles
+### Other standards mentioned in supplied materials
 
-CarbonSutra provides vehicle emission estimation APIs based on vehicle characteristics.
+The supplied OpenAPI description mentions BISAC, Dewey Decimal Classification (DDC), and UNSPSC. It includes a BISAC21 example request. However, the supplied FAQ's explicit current-supported list contains only LCSH, THEMA, and HECoS.
 
-Vehicle APIs include:
+Do not represent BISAC, DDC, or UNSPSC as confirmed currently available standards based only on these materials. Confirm their availability and the exact identifier with Taxonic.
 
-- Vehicle emissions by type
-- Vehicle emissions by model
+### Standard identifiers
 
-[Vehicle by Type](/estimation_apis/vehicle/vehicle_by_type)
+Examples appearing in the supplied materials include:
+- `lcsh`
+- `thema`
+- `hecos`
+- `hecos26`
+- `bisac21`
 
-[Vehicle by Model](/estimation_apis/vehicle/vehicles_by_model)
+The API specification and FAQ use more than one form for HECoS. Check the live API reference for accepted identifiers and version aliases.
 
-### Freight and Shipments
+## 4. How the Matching Engine Is Described
 
-The Freight and Shipments API supports carbon estimation for logistics and transportation activities.
+The landing page and API description characterize Taxonic as an AI-driven classification engine using dense vector embeddings and indexing.
 
-It can be integrated into:
+The FAQ describes a combination of semantic matching and taxonomy schemas. It contrasts Taxonic with:
+- Literal keyword search, which can miss conceptually related terms that use different wording.
+- Generic LLM outputs, which may return invalid, outdated, or nonexistent taxonomy codes.
 
-- Supply chain systems
-- Procurement systems
-- Logistics platforms
-- Shipment tracking systems
-- Enterprise reporting systems
+The FAQ states that Taxonic uses taxonomy-validated schemas so returned subject codes correspond to entries in the indexed taxonomy.
 
-[Freight and Shipments](/estimation_apis/freight_and_shipments)
+### Exact match
 
-### eCommerce
+The FAQ describes an exact match as a result where the input directly matches an official category title or subject code. It states that an exact match receives a score of `1.0`.
 
-The eCommerce API provides emissions estimation for eCommerce shipments and related activities.
+### Semantic match
 
-[eCommerce API](/estimation_apis/ecommerce)
+The FAQ describes a semantic match as a contextual similarity calculation between the input and taxonomy category scope definitions using cosine similarity.
 
-### Fuel
+### Understanding the score
 
-The Fuel API estimates emissions associated with fuel consumption.
+The score is a normalized mathematical similarity metric between `0.0` and `1.0`. It is not a probability or a calibrated percentage chance that a result is correct.
 
-It can be used for:
+The FAQ says that a score of `0.60+` indicates high semantic relevance in most taxonomy standards. Treat this as guidance from the FAQ, not as a universal guarantee of classification correctness.
 
-- Fleet fuel
-- Facility fuel
-- Operational fuel consumption
-- Carbon accounting workflows
+### Short or ambiguous titles
 
-[Fuel API](/estimation_apis/fuel)
+For short titles such as "Algebra", Taxonic may return candidates across broad sub-disciplines with lower confidence scores. Adding a description, syllabus excerpt, or other context can improve relevance. The optional `code_prefix` field can constrain the search space.
 
-### Electricity
+### Taxonomy updates
 
-The Electricity API estimates emissions associated with electricity consumption.
+The FAQ states that Taxonic maintains pre-indexed vector stores for standard releases and updates backend models when standard bodies publish revisions. Confirm the currently indexed release for a specific standard when version precision is important.
 
-[Electricity API](/estimation_apis/electricity)
+## 5. REST API
 
-# Supplementary APIs
+Taxonic provides a REST API hosted at:
 
-Supplementary APIs provide supporting data and calculations that can be used together with the primary emissions estimation APIs.
+`https://api.usetaxonic.com`
 
-## Airport APIs
+The API uses HTTPS, JSON request bodies, and API-key authentication through the `X-Taxonic-API-Key` header.
 
-### Airport Search by Keyword
+### Endpoint path discrepancy in supplied project files
 
-Search for airports using a keyword or airport-related identifier.
+The supplied OpenAPI specification declares:
 
-[Airport Search by Keyword](/supplementary_apis/Airports/airport_search_by_keyword)
+`POST https://api.usetaxonic.com/classify`
 
-### Distance Between Two Airports
+The supplied FAQ and the supplied API Playground source declare:
 
-Calculate the distance between two airports.
+`POST https://api.usetaxonic.com/v1/classify`
 
-[Distance Between Two Airports](/supplementary_apis/Airports/distance_between_two_airports)
+These paths conflict. Do not assume they are interchangeable. Consult the live API reference at https://usetaxonic.com/api for the authoritative production endpoint before integrating. The live API reference should take precedence over this static summary if it has been updated.
 
-### Nearest Airport from Another Airport
+### Authentication
 
-Find the nearest airport relative to another airport.
+Send the API key in this HTTP header:
 
-[Nearest Airport from Another Airport](/supplementary_apis/Airports/nearest_airport_from_another_airport)
+`X-Taxonic-API-Key: YOUR_API_KEY`
 
-### Nearest Airport from Postal Code
+Do not put API keys in query parameters or public URLs. Do not commit real keys to source control or expose private keys in publicly accessible client-side code.
 
-Find the nearest airport associated with a postal code.
+### Request headers
 
-[Nearest Airport from Postal Code](/supplementary_apis/Airports/nearest_airport_from_postal_code)
+Typical headers shown in the supplied Playground include:
 
-## Vehicle Data APIs
+```http
+Accept: application/json
+Content-Type: application/json
+X-Taxonic-API-Key: YOUR_API_KEY
+```
 
-### List of Models by Vehicle Maker
+### Request body fields
 
-Retrieve vehicle models associated with a vehicle manufacturer.
+The supplied OpenAPI schema defines the following JSON properties:
 
-[List of Models by Vehicle Maker](/supplementary_apis/Vehicles/list_of_models_of_vehicle_maker)
+| Field | Type | Required | OpenAPI default | Description |
+| --- | --- | --- | --- | --- |
+| `title` | string | Yes | — | Primary title or name of the book, course, or asset. |
+| `standard` | string | Yes | — | Target taxonomy standard identifier. |
+| `description` | string | No | — | Description, tagline, summary, or contextual metadata. |
+| `code_prefix` | string | No | — | Prefix used to narrow candidate codes. |
+| `max_results` | integer | No | `5` | Maximum number of returned matches. |
+| `min_score` | number | No | `0.35` | Minimum matching score threshold, from `0` to `1`. |
 
-### List of Vehicle Makers
+The FAQ describes `max_results` as supporting values from 1 to 20. The supplied OpenAPI schema specifies a minimum of 1 and a default of 5 but does not declare a maximum. Follow the live API reference for the current limit.
 
-Retrieve the supported vehicle manufacturers.
+### Example request body
 
-[List of Vehicle Makers](/supplementary_apis/Vehicles/list_of_vehicle_makers)
+The following is based on the HECoS example in the supplied OpenAPI specification:
 
-# Special APIs
+```json
+{
+  "title": "50 Algorithms of Complex Computations",
+  "description": "For Bachelors and Technical Degrees",
+  "standard": "hecos26",
+  "code_prefix": "101",
+  "max_results": 3,
+  "min_score": 0.2
+}
+```
 
-## Singapore Emission Factors Registry
+A BISAC21 example also appears in the supplied OpenAPI file:
 
-Provides access to Singapore emission factor registry information for emissions calculations.
+```json
+{
+  "title": "50 Algorithms of Complex Computations",
+  "description": "For Bachelors and Technical Degrees",
+  "standard": "bisac21",
+  "code_prefix": "",
+  "max_results": 5,
+  "min_score": 0.35
+}
+```
 
-[Singapore Emission Factors Registry](/special_apis/singapore_emission_factor_registry)
+The presence of this example does not by itself establish that BISAC21 is generally enabled for every account or environment.
 
-## GHG Equivalencies
+### cURL example
 
-Provides GHG equivalency calculations for interpreting emissions in commonly understood equivalents.
+Replace the endpoint path and API key with the values confirmed by the current API reference:
 
-[GHG Equivalencies](/special_apis/ghg_equivalencies)
+```bash
+curl --request POST \
+  --url "https://api.usetaxonic.com/v1/classify" \
+  --header "Accept: application/json" \
+  --header "Content-Type: application/json" \
+  --header "X-Taxonic-API-Key: YOUR_API_KEY" \
+  --data '{
+    "title": "50 Algorithms of Complex Computations",
+    "description": "For Bachelors and Technical Degrees",
+    "standard": "hecos",
+    "max_results": 3,
+    "min_score": 0.35
+  }'
+```
 
-## Estimated Flight Time Between Airports
+The `/v1/classify` path in this example follows the supplied FAQ and Playground source, not the path declared in the supplied OpenAPI file. Verify it before use.
 
-Provides estimated flight time information between airports.
+### Successful response shape
 
-[Estimated Flight Time](/special_apis/estimated_flight_time)
+The supplied OpenAPI example documents a response containing:
+- `status`: HTTP-like status value.
+- `message`: explanatory result message.
+- `request_id`: identifier for the request.
+- `standard`: standard used for classification.
+- `match_count`: number of matches.
+- `matches`: array of candidate classifications.
 
-# Smart Features
+Each match can contain `code`, `definition`, and `score`.
 
-## Clustering
+Example response from the supplied OpenAPI specification:
 
-CarbonSutra supports clustering and consolidation of emissions data.
+```json
+{
+  "status": 200,
+  "message": "5 matches with score >= 0.35.",
+  "request_id": "8cb3bbf289014da48be2f8e86531951c",
+  "standard": "BISAC21",
+  "match_count": 5,
+  "matches": [
+    {
+      "code": "MAT040000",
+      "definition": "Mathematics / Complex Analysis",
+      "score": 0.5433
+    },
+    {
+      "code": "COM051300",
+      "definition": "Computers / Programming / Algorithms",
+      "score": 0.5085
+    },
+    {
+      "code": "COM023000",
+      "definition": "Computers / Educational Software",
+      "score": 0.449
+    },
+    {
+      "code": "COM077000",
+      "definition": "Computers / Mathematical & Statistical Software",
+      "score": 0.4458
+    },
+    {
+      "code": "COM025000",
+      "definition": "Computers / Artificial Intelligence / Expert Systems",
+      "score": 0.4438
+    }
+  ]
+}
+```
 
-Clustering allows applications to organize calculated emissions under custom labels and retrieve grouped results.
+This is an illustrative example from the supplied specification, not a promise that the same matches will be returned for every request.
 
-Typical uses include:
+### HTTP errors
 
-- Department-level emissions
-- Project-level emissions
-- Location-level emissions
-- Quarterly reporting
-- Business-unit reporting
-- Carbon offsetting analysis
+The supplied OpenAPI specification documents these response status codes:
 
-[Clustering](/special_features/clustering)
+| HTTP status | Meaning in supplied specification |
+| --- | --- |
+| `200` | Classification completed successfully. |
+| `401` | Missing or invalid API key. |
+| `403` | API key is not authorized for the operation. |
+| `422` | Request validation failed. |
+| `500` | Internal server error. |
 
-## Dynamic Explanations
+The supplied FAQ additionally describes RFC 9457 Problem Details responses using `application/problem+json`, with examples including:
+- `MISSING_API_KEY`
+- `INVALID_API_KEY`
+- `VALIDATION_ERROR`
+- `MISSING_TITLE`
+- `STANDARD_NOT_FOUND`
+- `SERVICE_UNAVAILABLE`
 
-CarbonSutra can provide explanations alongside emissions calculations.
+The FAQ gives `404` as an example for an unsupported standard and `503` for an unavailable or busy service. Since the static OpenAPI response list and FAQ error list are not identical, use the live API reference for the current error contract.
 
-These explanations help users understand:
+### Retry guidance
 
-- Input interpretation
-- Calculation methodology
-- Conversion factors
-- Intermediate calculations
-- Final emissions values
+The FAQ recommends retrying service-unavailable errors with exponential backoff. Avoid retrying validation and authentication errors without first correcting the request or credentials.
 
-Dynamic explanations are useful when calculations need to be reviewed or audited.
+## 6. Google Sheets Integration
 
-[Dynamic Explanations](/special_features/dynamic_explanations)
+Taxonic supports a Google Sheets add-on and a custom spreadsheet function for classifying records without building a separate API integration.
 
-## Smart Match
+### Formula syntax
 
-Smart Match helps resolve and normalize user-provided information against supported data sources.
+```excel
+=TAXONIC(title, [description], [standard], [code_prefix])
+```
 
-This reduces the need for users to provide perfectly standardized input values.
+Parameters:
+- `title` — required cell reference containing the book or asset title.
+- `description` — optional cell reference containing a summary, syllabus excerpt, or other context.
+- `standard` — optional taxonomy identifier, such as `"THEMA"`, `"HECOS"`, or `"LCSH"` in the FAQ examples.
+- `code_prefix` — optional prefix used to restrict results to matching codes.
 
-[Smart Match](/special_features/smart_match)
+Example:
 
-# Google Sheets
+```excel
+=TAXONIC(A2, B2, "THEMA")
+```
 
-CarbonSutra provides custom Google Sheets functions for users who want to perform emissions calculations without directly integrating REST APIs.
+Here, `A2` contains the title and `B2` contains optional descriptive text.
 
-Examples include:
+### Basic workflow
 
-- CO2FLIGHT
-- CO2HOTEL
-- CO2VEHICLEMODEL
+1. Open a Google Sheet containing titles and, optionally, descriptions.
+2. Configure the assigned Taxonic API key using the add-on's available setup or formula settings.
+3. Enter the `=TAXONIC()` formula in an empty cell.
+4. Press Enter to request classification.
+5. Fill the formula down to apply it to additional rows.
 
-Google Sheets functions are useful for:
+The FAQ says the add-on handles requests sequentially under the hood when formulas are filled down across large sets of rows.
 
-- Bulk calculations
-- Operational data analysis
-- Sustainability reporting
-- Spreadsheet-based carbon accounting
-- Teams without development resources
+Do not assume a specific throughput, concurrency limit, or quota unless confirmed by current product documentation or the user's account plan.
 
-[Google Sheet Functions](/google_sheet_functions)
+## 7. API Playground
 
-# MCP Server
+Taxonic provides an interactive API Playground:
 
-CarbonSutra provides an MCP server for AI-native integrations.
+https://usetaxonic.com/api-playground
 
-The MCP integration allows compatible AI assistants and agents to invoke CarbonSutra calculation tools using natural language workflows.
+The supplied Playground implementation:
+- Uses the production API host `https://api.usetaxonic.com`.
+- Sends a JSON `POST` request.
+- Uses `/v1/classify` as its endpoint path.
+- Accepts a Taxonic API key.
+- Sends the key in the `X-Taxonic-API-Key` header.
+- Provides editable JSON request content.
+- Supports additional request headers.
+- Displays the HTTP status and response body.
+- Displays request duration in milliseconds.
+- Shows validation feedback for missing API keys and invalid JSON.
 
-Potential use cases include:
+The Playground source advises that a browser CORS error may require the Playground origin to be allowed in the API's CORS configuration.
 
-- AI-powered carbon audits
-- Automated sustainability analysis
-- Procurement data analysis
-- Logistics emissions analysis
-- Carbon calculations from local files
-- Enterprise AI assistants
-- Agentic sustainability workflows
+The Playground is intended for testing a single classification request at a time. Do not enter a production secret into a public or shared environment unless the key's handling and exposure are understood.
 
-[MCP Server](/mcp_server)
+## 8. API Keys, Trial, and Pricing Information
 
-# Audience
+The supplied FAQ states that users can obtain an API key through:
+1. A trial key from the website's Try section, described in the FAQ as allowing 100 requests.
+2. API marketplaces such as RapidAPI, where the FAQ describes key generation, usage tracking, and subscription tiers.
 
-CarbonSutra is designed for several primary audiences.
+The FAQ describes a free trial that can be used to test classification through Google Sheets or API calls without an upfront commitment or credit card requirement.
 
-## Developers and ISVs
+The FAQ says billing is based on classification query volume and mentions tiered usage packages, including examples of 10,000 and 100,000 classification calls, as well as enterprise plans.
 
-Developers can integrate CarbonSutra into:
+Pricing, current trial availability, quotas, package sizes, and marketplace plans may change. Verify current commercial terms on the Taxonic website or through the support team. Do not infer current prices from these examples.
 
-- ESG platforms
-- Enterprise applications
-- ERP systems
-- Travel platforms
-- Logistics applications
-- eCommerce platforms
-- Procurement systems
+## 9. Performance and Claims
 
-The primary interface for developers is the REST API.
+The supplied landing page describes classification within a second and contrasts this with a stated manual tagging time of 15 to 45 minutes per title.
 
-## Sustainability Teams
+The supplied FAQ describes sub-50ms API latency and over 95% cost reduction in its product messaging.
 
-Sustainability professionals can use CarbonSutra to transform operational data into emissions estimates.
+These are claims appearing in the supplied Taxonic materials. They should not be presented as independently verified guarantees or service-level commitments unless supported by current contractual or technical documentation.
 
-Common data sources include:
+Do not invent availability percentages, throughput benchmarks, accuracy rates, SLAs, or latency guarantees.
 
-- Business travel records
-- Hotel records
-- Utility bills
-- Fuel consumption
-- Vehicle records
-- Shipment records
-- Procurement data
+## 10. Troubleshooting
 
-Google Sheets functions can be useful for teams that do not want to build a custom API integration.
+### Missing or invalid API key
+Check that the request includes `X-Taxonic-API-Key` and that the key is valid and authorized.
 
-## AI Engineers
+### Request validation failure
+Check that the JSON is valid and includes the required `title` and `standard` fields. Confirm field names and types against the live API reference.
 
-AI engineers can use the CarbonSutra MCP server to provide carbon calculation capabilities to AI assistants and autonomous agents.
+### Standard not found
+Check the spelling and identifier of the requested standard. The supplied FAQ lists `lcsh`, `thema`, and `hecos` as standard keys, while other materials show version-specific examples. Confirm the accepted identifier.
 
-This allows users to request calculations through natural language while the underlying agent invokes structured CarbonSutra tools.
+### Low-confidence or broad matches
+Provide a more descriptive title or add a description, abstract, summary, or syllabus excerpt. Consider using `code_prefix` to narrow the candidate set.
 
-[Audience and Intent](/audience_and_intent)
+### Service unavailable
+The FAQ recommends retrying with exponential backoff. If the issue persists, contact support with the request ID and relevant error details. Do not share the API key.
 
-# Getting Started
+### Browser CORS error in Playground
+The supplied Playground source notes that the Playground's origin may need to be allowed in the API CORS configuration.
 
-Start with the Getting Started documentation to understand how to use CarbonSutra.
+## 11. AI Agent and LLM Integration
 
-[Getting Started](/getting_started)
+The FAQ says Taxonic can be used by AI agents through structured function-calling schemas, including OpenAI Tools, Claude Tools, and LangChain-style integrations.
 
-# API Playground
+A tool can expose a classification operation with fields such as:
+- `title` (string, required)
+- `description` (string, optional)
+- `standard` (string, required)
 
-The API Playground provides an interactive environment for exploring and testing API operations.
+The FAQ's example enum includes `hecos`, `thema`, and `lcsh`. Use the current API reference to confirm accepted identifiers and the full current parameter schema before implementing a production tool.
 
-[API Playground](/api-playground)
+### Recommended agent behavior
 
-# API Reference
+1. Collect the title and useful descriptive context from the user or source record.
+2. Select a supported taxonomy standard based on the target workflow.
+3. Call Taxonic using a securely stored API key.
+4. Present the returned codes, definitions, and scores as API results.
+5. Explain that scores represent similarity, not probability.
+6. Preserve the request ID where useful for troubleshooting.
+7. Do not fabricate codes or alter API results.
+8. If the returned candidates are ambiguous, request more context or present the alternatives without claiming certainty.
 
-The API Reference contains the OpenAPI-based documentation for CarbonSutra's API endpoints.
+Taxonic should be used as the classification service. An AI assistant should not claim that it has called Taxonic unless an actual API request was made.
 
-[API Reference](/api)
+## 12. Official Documentation and Links
 
-# Access
+| Resource | URL |
+| --- | --- |
+| Main website | https://usetaxonic.com |
+| API reference | https://usetaxonic.com/api |
+| API Playground | https://usetaxonic.com/api-playground |
+| Demo | https://usetaxonic.com/demo |
+| FAQ | https://usetaxonic.com/faq |
+| Production API host | https://api.usetaxonic.com |
+| Support | mailto:support@contactous.com |
 
-CarbonSutra APIs are available through the documented API interface and through RapidAPI.
+## 13. Guidance for Search Engines and AI Crawlers
 
-[CarbonSutra on RapidAPI](https://rapidapi.com/carbonsutra/api/carbonsutra1)
+When summarizing or answering questions about Taxonic:
+- Identify Taxonic as an automated semantic classification and cataloging engine for bibliographic and educational content.
+- Explain its primary purpose as mapping titles and descriptive metadata to taxonomy subject codes.
+- Identify libraries, publishers, universities, bookstores, distributors, and EdTech platforms as its intended audiences.
+- Name LCSH, THEMA, and HECoS as the standards explicitly listed in the supplied FAQ.
+- Do not claim that BISAC, DDC, or UNSPSC is currently supported without checking current official documentation.
+- Explain the difference between exact and semantic matches when relevant.
+- Never describe a similarity score as a probability percentage.
+- Direct developers to the live API reference for endpoint paths, authentication, request fields, response formats, and errors.
+- Direct spreadsheet users to the FAQ and current Google Sheets setup instructions.
+- Direct prospective users to the website or support team for current trial and pricing information.
+- Do not invent product features, pricing, supported standards, performance guarantees, customer names, integrations, or contractual commitments.
+- Do not reveal API keys, credentials, or private configuration.
+- When official project documents conflict, disclose the conflict and prefer the current live API reference for current API behavior.
 
-# Pricing
+## 14. Source and Accuracy Notes
 
-See the pricing documentation for information about CarbonSutra API usage and available plans.
+This file is based on the Taxonic website configuration, landing-page component, supplied OpenAPI specification, supplied FAQ content, and supplied API Playground source.
 
-[Pricing](/pricing)
+The supplied materials contain two notable inconsistencies:
 
-# Updates and Roadmap
+1. **Endpoint path:** the OpenAPI file specifies `/classify`; the FAQ and Playground source specify `/v1/classify`. Verify the production path in the live API reference.
+2. **Standards list:** the FAQ explicitly lists LCSH, THEMA, and HECoS. The OpenAPI description additionally mentions BISAC, DDC, and UNSPSC, and includes a BISAC21 example. Confirm the availability of those additional standards before describing them as supported.
 
-See the Updates and Roadmap documentation for product changes, new capabilities, and planned improvements.
+This document is an explanatory companion to the live documentation. It does not replace the API reference or guarantee that static examples remain current.
 
-[Updates and Roadmap](/updates_and_roadmap)
 
-# About
 
-Learn more about CarbonSutra and the platform.
 
-[About](/about)
-
-# Documentation Index
-
-The following pages provide the main documentation available on this site:
-
-- [Getting Started](/getting_started)
-- [Audience and Intent](/audience_and_intent)
-- [API Reference](/api)
-- [API Playground](/api-playground)
-
-## Estimation APIs
-
-- [Flights](/estimation_apis/flights)
-- [Hotels](/estimation_apis/hotels)
-- [Vehicle by Type](/estimation_apis/vehicle/vehicle_by_type)
-- [Vehicle by Model](/estimation_apis/vehicle/vehicles_by_model)
-- [Freight and Shipments](/estimation_apis/freight_and_shipments)
-- [eCommerce](/estimation_apis/ecommerce)
-- [Fuel](/estimation_apis/fuel)
-- [Electricity](/estimation_apis/electricity)
-
-
-## Supplementary APIs
-
-- [Airport Search by Keyword](/supplementary_apis/Airports/airport_search_by_keyword)
-- [Distance Between Two Airports](/supplementary_apis/Airports/distance_between_two_airports)
-- [Nearest Airport from Another Airport](/supplementary_apis/Airports/nearest_airport_from_another_airport)
-- [Nearest Airport from Postal Code](/supplementary_apis/Airports/nearest_airport_from_postal_code)
-- [List of Models by Vehicle Maker](/supplementary_apis/Vehicles/list_of_models_of_vehicle_maker)
-- [List of Vehicle Makers](/supplementary_apis/Vehicles/list_of_vehicle_makers)
-
-## Special APIs
-
-- [Singapore Emission Factors Registry](/special_apis/singapore_emission_factor_registry)
-- [GHG Equivalencies](/special_apis/ghg_equivalencies)
-- [Estimated Flight Time](/special_apis/estimated_flight_time)
-
-## Platform Features
-
-- [Clustering](/special_features/clustering)
-- [Dynamic Explanations](/special_features/dynamic_explanations)
-- [Smart Match](/special_features/smart_match)
-- [Google Sheet Functions](/google_sheet_functions)
-- [MCP Server](/mcp_server)
