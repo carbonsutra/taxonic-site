@@ -9,6 +9,29 @@
   max-width: none !important;
 }
 
+/* Remove Zudoku's top spacing on the landing page only */
+body:has(.taxonic-home-page) main:not(.landing-main) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Remove spacing from the MDX content wrapper */
+body:has(.taxonic-home-page) article:has(.taxonic-home-page) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+body:has(.taxonic-home-page) .taxonic-home-page {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Remove Zudoku's default top padding on the Taxonic homepage */
+body:has(.taxonic-home-page) .prose:has(.taxonic-home-page) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
 /* ================================
    Mobile Header
    ================================ */
@@ -60,4 +83,32 @@
     width: 145px !important;
     max-width: 145px !important;
   }
+}
+
+/* Remove Zudoku grid spacing on Taxonic homepage only */
+body:has(.taxonic-home-page) .grid:has(.taxonic-home-page) {
+  gap: 0 !important;
+  row-gap: 0 !important;
+}
+
+/* Remove content wrapper spacing */
+body:has(.taxonic-home-page) .prose:has(.taxonic-home-page) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Remove landing page wrapper spacing */
+.taxonic-home-page {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Taxonic homepage: remove the 32px child offset */
+body:has(.taxonic-home-page) .prose:has(> .taxonic-home-page) {
+  padding-top: 0 !important;
+}
+
+body:has(.taxonic-home-page) .taxonic-home-page {
+  position: relative;
+  margin-bottom: -52px !important;
 }

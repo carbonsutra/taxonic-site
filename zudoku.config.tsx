@@ -1,5 +1,4 @@
 import type { ZudokuConfig } from "zudoku";
-import LandingPage from "./src/components/LandingPage";
 import ApiPlayground from "./src/components/ApiPlayground";
 import googleAnalyticsPlugin from "./src/plugins/googleAnalytics";
 import Onboarding from "./src/components/Onboarding";
@@ -21,27 +20,28 @@ const config: ZudokuConfig = {
     },
   },
   metadata: {
-    title: "Taxonic ::  Automated Cataloging Engine for Publishers, Libraries, and EdTech.",
+    title:
+      "Taxonic ::  Automated Cataloging Engine for Publishers, Libraries, and EdTech.",
     description:
       "High-throughput classification engine for publishers, libraries, and EdTech. Standardize unstructured content to THEMA, HECoS, and LCSH.",
     favicon: "images/taxonic-favicon.ico",
     applicationName: "Classification Engine for Books & Educational Assets",
     keywords: [
-      "Automated bibliographic classification", 
-      "THEMA subject code generator", 
-      "LCSH auto-cataloging software", 
-      "HECoS subject mapping API", 
-      "Book metadata enrichment tool", 
-      "AI library cataloging engine", 
-      "Google Sheets classification formula", 
-      "Bulk ONIX metadata standardization", 
-      "Academic syllabus classification API", 
-      "Semantic metadata tagging engine", 
-      "Publisher backlist categorization tool", 
-      "Automated subject indexing", 
-      "DDC number building automation", 
-      "Dewey", 
-      "Library of Congress", 
+      "Automated bibliographic classification",
+      "THEMA subject code generator",
+      "LCSH auto-cataloging software",
+      "HECoS subject mapping API",
+      "Book metadata enrichment tool",
+      "AI library cataloging engine",
+      "Google Sheets classification formula",
+      "Bulk ONIX metadata standardization",
+      "Academic syllabus classification API",
+      "Semantic metadata tagging engine",
+      "Publisher backlist categorization tool",
+      "Automated subject indexing",
+      "DDC number building automation",
+      "Dewey",
+      "Library of Congress",
       "Metadata enrichment for EdTech",
     ],
     creator: "Manish Sharma",
@@ -73,9 +73,10 @@ const config: ZudokuConfig = {
 
   navigation: [
     {
-      type: "custom-page",
+      type: "doc",
       path: "/",
-      element: <LandingPage />,
+      file: "home",
+      display: "hide",
     },
 
     /***
@@ -137,8 +138,6 @@ const config: ZudokuConfig = {
       label: "Reference",
       to: "/api",
     },
-
-
 
     {
       type: "doc",
