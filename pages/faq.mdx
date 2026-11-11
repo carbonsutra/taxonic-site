@@ -7,15 +7,13 @@ showLastModified: false
 disable_pager: true
 ---
 
-Answers to common questions on Taxonic - from semantic classification and supported taxonomy standards to Google Sheets integration, REST API usage, API keys, pricing, and troubleshooting.
-
 ---
 
-## General & Core Concepts
+## General 
 
 
 <details>
-  <summary>What is Taxonic and what primary problem does it solve?</summary>
+  <summary>What is Taxonic and what problem does it solve?</summary>
 
 Taxonic is a classification engine built for academic publishers, libraries, bookstores, and EdTech platforms. It converts raw, unstructured text such as book titles, academic course name and any associated metadata, keywords or description into official taxonomy subject codes (such as THEMA, LCSH, and HECoS). 
 
@@ -57,7 +55,7 @@ Taxonic combines vector embeddings algorithms with deterministic, ontology-valid
 
  
 
-Taxonic is designed to be used in your own spreadsheets irrespective of their design and formats. 90% of our users take this route. Just call a function and it will catgorise the text. This can be done by a spreadsheet user with minimum help needed. 
+Taxonic is designed to be used in your own spreadsheets irrespective of its design or format. 90% of our users take this route. Just call a function and it will catgorise the text. This can be done by a spreadsheet user with minimum help needed. 
 
 If your institution has its own digital asset management system, Taxonic can be integrated into it through an easy API which is well documented on this site. 
 
@@ -80,25 +78,33 @@ That's it!
 
 </details>
 
-## Google Sheets Add-on & No-Code Usage
+## Spreadsheets
 
 <details>
-  <summary>How do catalogers and editorial staff use Taxonic inside Google Sheets?</summary>
+  <summary>How do catalogers use Taxonic in Google Sheets?</summary>
 
-Taxonic operates directly inside Google Sheets via a custom spreadsheet formula, requiring zero software installation or technical training.
+There are two ways, but you will need a Taxonic API Key for both of them, which you can get it from this site or any marketplace which hosts Taxonic. 
 
-1. Open your spreadsheet containing titles and (optional) metadata.
-2. Enter your assigned API Key in the sidebar or formula settings. You can embed the key within the formula itself - while that is not a recommended way but it is the fasted route if you are testing Taxonic's output.
-3. Type the custom formula in any empty cell: `=TAXONIC(A2, B2, "THEMA")` (where `A2` is the title and `B2` is an optional description).
-4. Press **Enter**. Taxonic populates the official code and definition instantly.
+### Direct Formula
+You can use your Google Sheet irrespective of its format and structure. Understanding this example will get you started within minutes.
 
-</details>
-<details>
-  <summary>What is the syntax for the custom `=TAXONIC()` formula?</summary>
+- Assume that your API Key is ABCDEF
+- Let's say you title is cell: A1 and description/metadata is in B1
+- The standard is LCSH
 
-The standard formula syntax is:
+Then type the following formula in C1: 
+```
+=CHOOSEROWS(IMPORTDATA("https://api.usetaxonic.com/v1/classify?format=csv&title=" & ENCODEURL(A1) & "&description=" & ENCODEURL(B1) & "&standard=LCSH&max_results=1&min_score=0.30&api_key=ABCDEF"), 2)
+```
+This will give you the code in D1 and the description of the code in E1
 
-```excel
+### App Script
+
+You can write an App Script to create a function: Taxonic (or call it by any other name). Then type the custom formula in any empty cell: `=TAXONIC(A2, B2, "THEMA")` (where `A2` is the title and `B2` is an optional description). 
+
+We can provide you with a complete App Script code. Please contact us if you need it. It will create a formula =TAXONIC(), the syntax of which is:
+
+```
 =TAXONIC(title, [description], [standard], [code_prefix])
 ```
 
@@ -109,9 +115,36 @@ The standard formula syntax is:
 
 </details>
 <details>
+  <summary>What is the formula for Excel and LibreOffice Calc?</summary>
+
+Like in the last question, 
+
+- Assume that your API Key is ABCDEF
+- Let's say you title is cell: A1 and description/metadata is in B1
+- The standard is LCSH
+
+### For Excel:
+
+Type the following formula in C1: 
+```
+=CHOOSEROWS(TEXTSPLIT(WEBSERVICE("https://api.usetaxonic.com/v1/classify?format=csv&title=" & ENCODEURL(A1) & "&description=" & ENCODEURL(B1) & "&standard=LCSH&max_results=1&min_score=0.30&api_key=ABCDED"), ",", CHAR(10)), 2)
+```
+This will give you the code in D1 and the description of the code in E1
+
+
+### For LibreOffice Calc:
+
+Type the following formula in C1: 
+```
+=CHOOSEROWS(TEXTSPLIT(WEBSERVICE("https://api.usetaxonic.com/v1/classify?format=csv&title=" & ENCODEURL(A1) & "&description=" & ENCODEURL(B1) & "&standard=LCSH&max_results=1&min_score=0.30&api_key=ABCDEF"), ",", CHAR(10)), 2)
+```
+This will give you the code in D1 and the description of the code in E1
+
+</details>
+<details>
   <summary>Can I bulk-classify thousands of catalog rows at once in a spreadsheet?</summary>
 
-Yes. You can drag the `=TAXONIC()` formula down across thousands of rows. The Google Sheets add-on handles request batching sequentially under the hood, allowing non-technical catalogers to re-index whole backlists without needing developer resources.
+Yes. You can drag the `=TAXONIC()` or your custom formula down across thousands of rows. The Google Sheets add-on handles request batching sequentially under the hood, allowing non-technical catalogers to re-index whole backlists without needing developer resources.
 
 </details>
 <details>
@@ -123,12 +156,12 @@ No. Because Taxonic operates directly within standard Google Sheets using famili
 
 </details>
 
-## REST API & Technical Integration
+## API 
 
 <details>
 <summary>How do developers integrate Taxonic into custom applications or Library Services Platforms (LSPs)?</summary>
 
-Taxonic provides a RESTful API with sub-50ms latency. Applications send an HTTPS `POST` request to `/v1/classify` with a JSON payload containing item metadata.
+Taxonic provides a fast RESTful API. Applications send an HTTPS `POST` request to `/v1/classify` with a JSON payload containing item metadata.
 
 ```http
 POST /v1/classify HTTP/1.1
@@ -197,7 +230,7 @@ Yes. Taxonic natively supports structured function calling schemas (OpenAI Tools
 
 </details>
 
-## Taxonomy Standards & Matching Engine
+## Standards & Matching Engine
 
 <details>
   <summary>Which taxonomy standards are currently supported by Taxonic?</summary>
@@ -240,29 +273,63 @@ Taxonic maintains pre-indexed vector stores for standard releases. When a standa
 
 You can obtain an API Key in two ways:
 
-1. **Directly:** You can get a trial key for 100 requests from the 'Try' section of the website.  
+1. **Directly:** You can get a trial key for 100 requests from the 'Trial' section of the website.  
 2. **API Marketplaces:** Subscribe through API marketplaces such as **RapidAPI**, which provides instant key generation, usage tracking, and flexible monthly subscription tiers.
 
 </details>
 
 
 <details> 
-<summary>Can I test Taxonic at no cost before purchasing?</summary>
+<summary>How can I test Taxonic at no cost before purchasing?</summary>
 
-Yes. Taxonic provides a free trial quota allowing you to test classification live in your own Google Sheets or via cURL/Python API calls without any upfront commitment or credit card requirement.
+- A Taxonic API key is needed for trial. Marketplaces like RapidAPI will not need this key as they will generate their own.
+- The trial Taxonic key gives 100 credits that can be used free. These are attached to an email address and can be generated from usetaxonic.com
+- This key can be used directly in spreadsheets or APIs
+- The same key can be used to get codes from any classification system
+- The keys will expire after one year. 
+- The unused balance of a key can be checked on the website in future. 
 
 </details>
 
 <details>
   <summary>How is usage measured and billed?</summary>
 
-Taxonic is billed based on classification query volume (per item classified). Tiered usage packages (e.g., 10,000 or 100,000 classification calls) are available for both API integration and Google Sheets usage. Enterprise plans offer high-volume bulk rates and dedicated SLA support.
+Taxonic works on credits. One credit is consumed after a successful assignment of a code to a given title. 
+
+There are free tiers available for you to test the results in your own environment. Once you are convinced, you can purchase API keys which are valid for 10,000 or 50,000 classification calls. 
 
 ---
 
 </details>
 
-## Troubleshooting & Support
+## Custom Services
+
+<details>
+  <summary>We are not technical. Can you help us to categorise?</summary>
+
+Certainly. We have worked with several small public and college libraries in this mode. If you have data of your books (title and any other information about them), we can get the categorisation work done for you as a service. Please contact us with your requirements. 
+
+</details>
+
+
+<details> 
+<summary>How can you support the classification system used by us?</summary>
+
+If the definition files of your preferred classification system are publicly available, we will add them to our system on priority. If your classification system is customized to a scope (say a university or a board of education), we can make it available for you. 
+
+</details>
+
+<details>
+  <summary>Can you extract metadata from our books / papers?</summary>
+Yes. This is a premium service that we provide to our customers. Dozens of metadata fields can be extracted by our algorithms from pdf files. This can be done on-premise, without your documents leaving your organization's folders. Please contact us for a conversation. 
+
+
+</details>
+
+
+
+
+## Troubleshooting 
 
 <details>
   <summary>What error format does Taxonic use if an API request fails?</summary>
