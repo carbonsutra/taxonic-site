@@ -121,7 +121,7 @@ export default function ApiPlayground() {
             </p>
           </div>
           <span className="rounded border px-2 py-1 font-mono text-[10px] opacity-70">
-            v3.0.0
+            v1.0.0
           </span>
         </div>
 

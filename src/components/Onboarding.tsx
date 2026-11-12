@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 
-const API_URL = `${import.meta.env.ZUDOKU_PUBLIC_API_URL}api/v1/register_user`;
+const API_URL = `${import.meta.env.ZUDOKU_PUBLIC_API_URL}/admin/v1/api-keys`;
 
 export default function Onboarding() {
   const [email, setEmail] = useState("");

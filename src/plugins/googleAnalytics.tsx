@@ -1,6 +1,6 @@
 import type { ZudokuPlugin } from "zudoku";
 
-const GA_ID = "G-1WFKHGBLJP";
+const GA_ID = "G-0L55SFF3XW";
 
 const googleAnalyticsPlugin: ZudokuPlugin = {
   getHead: () => (

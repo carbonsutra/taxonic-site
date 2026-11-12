@@ -5,7 +5,7 @@ import Onboarding from "./src/components/Onboarding";
 import Footer from "./src/components/Footer";
 
 const config: ZudokuConfig = {
-  // plugins: [googleAnalyticsPlugin],
+  plugins: [googleAnalyticsPlugin],
 
   header: {
     themeSwitcher: {

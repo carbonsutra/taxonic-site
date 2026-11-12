@@ -7,16 +7,40 @@ disable_pager: true
 
 import ApiPlayground from "../src/components/ApiPlayground";
 
-# Try Taxonic - Right Now
+# Taxonic API Playground
 
-<div className="not-prose flex w-full items-center justify-between gap-4">
-  <h3 className="!m-0 !text-lg !font-semibold !text-foreground">
-    All you need is a free trial key which you can get by the next minute.
-  </h3>
+Test Taxonic APIs directly from your browser with our interactive playground. Explore API endpoints, configure requests, and view real-time responses instantly, without writing code or setting up any additional tools.
+
+<div className="not-prose flex flex-col gap-4 rounded-2xl border border-black/10 bg-black/[0.02] p-5 dark:border-white/10 dark:bg-white/[0.03] sm:flex-row sm:items-center sm:justify-between sm:p-6">
+  <div className="space-y-1">
+    <h3 className="!m-0 text-base font-semibold text-foreground">
+      Get started with a free API key
+    </h3>
+    <p className="!m-0 text-sm text-muted-foreground">
+      Generate your authorization code and start testing in minutes.
+    </p>
+  </div>
+
+  <a
+    href="/onboard"
+    className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground! no-underline transition-opacity hover:opacity-90 font-semibold!"
+  >
+    Get Authorization Code
+    <span className="transition-transform group-hover:translate-x-1">→</span>
+  </a>
 </div>
 
-A key (called X-Taxonic-API-Key) is sent to you in your email. It is valid for 100 requests. If you need more then you can register again or simply contact us. 
-The details of payload and on instructions to use in spreadsheets are in FAQ. 
+### Before you begin
+
+- **API Key:** Your `X-Taxonic-API-Key` will be sent to your registered email address.
+- **Free access:** Each key includes 100 API requests.
+- **Need more requests?** Register again for a new key or contact our team.
+
+For request payload details and instructions on using Taxonic with Google Sheets, refer to the [FAQ](/faq).
+
+### Test your API
+
+Use the interactive playground below to configure requests, provide your API key, and explore Taxonic API responses.
 
 <div className="not-prose w-full max-w-none">
   <ApiPlayground />
