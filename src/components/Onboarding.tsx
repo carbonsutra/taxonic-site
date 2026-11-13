@@ -121,8 +121,6 @@ export default function Onboarding() {
     return `${days} days validity`;
   };
 
-  console.log(selectedPlan);
-
   return (
     <div className="not-prose w-full">
       <div className="mx-auto flex min-h-[65vh] w-full items-center justify-center px-4 py-8">
