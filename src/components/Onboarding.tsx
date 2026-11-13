@@ -88,6 +88,7 @@ export default function Onboarding() {
         },
         body: JSON.stringify({
           email: trimmedEmail,
+          plan_id: selectedPlan,
         }),
       });
 
@@ -119,6 +120,8 @@ export default function Onboarding() {
     if (days === null) return "No expiry";
     return `${days} days validity`;
   };
+
+  console.log(selectedPlan);
 
   return (
     <div className="not-prose w-full">
@@ -183,14 +186,14 @@ export default function Onboarding() {
                   ) : (
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       {plans.map((plan) => {
-                        const isSelected = selectedPlan === String(plan.id);
+                        const isSelected = selectedPlan === String(plan.code);
 
                         return (
                           <button
                             key={plan.id}
                             type="button"
                             disabled={loading}
-                            onClick={() => setSelectedPlan(String(plan.id))}
+                            onClick={() => setSelectedPlan(String(plan.code))}
                             aria-pressed={isSelected}
                             className={`relative rounded-xl border p-4 text-left transition-all ${
                               isSelected
