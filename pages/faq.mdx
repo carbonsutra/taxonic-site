@@ -9,70 +9,55 @@ disable_pager: true
 
 ---
 
-## General 
-
+## General
 
 <details>
   <summary>What is Taxonic and what problem does it solve?</summary>
 
-Taxonic is a classification engine built for academic publishers, libraries, bookstores, and EdTech platforms. It converts raw, unstructured text such as book titles, academic course name and any associated metadata, keywords or description into official taxonomy subject codes (such as THEMA, LCSH, and HECoS). 
+Taxonic is a classification engine built for academic publishers, libraries, bookstores, and EdTech platforms. It converts raw, unstructured text such as book titles, academic course name and any associated metadata, keywords or description into official taxonomy subject codes (such as THEMA, LCSH, and HECoS).
 
 Manual tagging traditionally takes catalogers and librarians 15 to 45 minutes per record, costing organizations $10 to $25 per title. Taxonic eliminates this bottleneck by automating subject classification at high speed with over 95% cost reduction.
 
 </details>
 
-
-
 <details>
   <summary>Who is Taxonic designed for?</summary>
 
- 
 Taxonic is designed for anyone managing bibliographic metadata or educational content catalogs:
 
 - **Librarians & Technical Services Leads:** - to clear cataloging backlogs and generate accurate call numbers and subject headings.
-- **Publishers & Backlist Managers:** -  for enriching backlist catalogs with modern THEMA/BISAC subject codes to prevent retail feed rejections and boost e-commerce discoverability.
+- **Publishers & Backlist Managers:** - for enriching backlist catalogs with modern THEMA/BISAC subject codes to prevent retail feed rejections and boost e-commerce discoverability.
 - **EdTech & Learning Platforms:** - for automatically tagging digital courseware, syllabi, and assets against higher-education frameworks like HECoS.
 - **Bookstores & Distributors:** - in normalizing incoming publisher feeds directly into storefront category nodes.
- 
-</details>
 
+</details>
 
 <details>
   <summary>How does Taxonic differ from traditional keyword search or generic AI?</summary>
 
- 
 Generic keyword search fails when titles use natural language instead of taxonomy terms (e.g., matching "Pottery Techniques" to "Ceramic Artefacts"). Generic LLMs, on the other hand, can tend to hallucinate invalid, out-of-date, or non-existent taxonomy codes if they are not trained on latest databases.
 
 Taxonic combines vector embeddings algorithms with deterministic, ontology-validated taxonomy schemas. It understands the deep contextual meaning of text while guaranteeing that every returned subject code strictly exists within the official taxonomy standard.
- 
+
 </details>
-
-
-
 
 <details>
   <summary>How can I use Taxonic in my environment?</summary>
 
- 
+Taxonic is designed to be used in your own spreadsheets irrespective of its design or format. 90% of our users take this route. Just call a function and it will catgorise the text. This can be done by a spreadsheet user with minimum help needed.
 
-Taxonic is designed to be used in your own spreadsheets irrespective of its design or format. 90% of our users take this route. Just call a function and it will catgorise the text. This can be done by a spreadsheet user with minimum help needed. 
+If your institution has its own digital asset management system, Taxonic can be integrated into it through an easy API which is well documented on this site.
 
-If your institution has its own digital asset management system, Taxonic can be integrated into it through an easy API which is well documented on this site. 
-
- 
 </details>
-
-
 
 <details>
   <summary>What data preparation is needed for using Taxonic?</summary>
  
 - First, make sure that the taxonomy standard is supported by Taxonic. These are listed here in this FAQ. If your desired standard is not supported then ask us and we will prioritise it. 
 - Next, the title of the book, periodical, academic paper. This is an important input. If you add the susbtitle to it, then it is acceptable. 
-- Last, there isa description of that title. Here you can add any meta information like Back-cover blurbs, abstracts, keywords or summaries. This text could be unformatted and unstructured.  
+- Last, there isa description of that title. Here you can add any meta information like Back-cover blurbs, abstracts, keywords or summaries. This text could be unformatted and unstructured.
 
 That's it!
- 
 
 ---
 
@@ -83,24 +68,27 @@ That's it!
 <details>
   <summary>How do catalogers use Taxonic in Google Sheets?</summary>
 
-There are two ways, but you will need a Taxonic API Key for both of them, which you can get it from this site or any marketplace which hosts Taxonic. 
+There are two ways, but you will need a Taxonic API Key for both of them, which you can get it from this site or any marketplace which hosts Taxonic.
 
 ### Direct Formula
+
 You can use your Google Sheet irrespective of its format and structure. Understanding this example will get you started within minutes.
 
 - Assume that your API Key is ABCDEF
 - Let's say you title is cell: A1 and description/metadata is in B1
 - The standard is LCSH
 
-Then type the following formula in C1: 
+Then type the following formula in C1:
+
 ```
 =CHOOSEROWS(IMPORTDATA("https://api.usetaxonic.com/v1/classify?format=csv&title=" & ENCODEURL(A1) & "&description=" & ENCODEURL(B1) & "&standard=LCSH&max_results=1&min_score=0.30&api_key=ABCDEF"), 2)
 ```
+
 This will give you the code in D1 and the description of the code in E1
 
 ### App Script
 
-You can write an App Script to create a function: Taxonic (or call it by any other name). Then type the custom formula in any empty cell: `=TAXONIC(A2, B2, "THEMA")` (where `A2` is the title and `B2` is an optional description). 
+You can write an App Script to create a function: Taxonic (or call it by any other name). Then type the custom formula in any empty cell: `=TAXONIC(A2, B2, "THEMA")` (where `A2` is the title and `B2` is an optional description).
 
 We can provide you with a complete App Script code. Please contact us if you need it. It will create a formula =TAXONIC(), the syntax of which is:
 
@@ -117,7 +105,7 @@ We can provide you with a complete App Script code. Please contact us if you nee
 <details>
   <summary>What is the formula for Excel and LibreOffice Calc?</summary>
 
-Like in the last question, 
+Like in the last question,
 
 - Assume that your API Key is ABCDEF
 - Let's say you title is cell: A1 and description/metadata is in B1
@@ -125,19 +113,22 @@ Like in the last question,
 
 ### For Excel:
 
-Type the following formula in C1: 
+Type the following formula in C1:
+
 ```
 =CHOOSEROWS(TEXTSPLIT(WEBSERVICE("https://api.usetaxonic.com/v1/classify?format=csv&title=" & ENCODEURL(A1) & "&description=" & ENCODEURL(B1) & "&standard=LCSH&max_results=1&min_score=0.30&api_key=ABCDED"), ",", CHAR(10)), 2)
 ```
-This will give you the code in D1 and the description of the code in E1
 
+This will give you the code in D1 and the description of the code in E1
 
 ### For LibreOffice Calc:
 
-Type the following formula in C1: 
+Type the following formula in C1:
+
 ```
 =CHOOSEROWS(TEXTSPLIT(WEBSERVICE("https://api.usetaxonic.com/v1/classify?format=csv&title=" & ENCODEURL(A1) & "&description=" & ENCODEURL(B1) & "&standard=LCSH&max_results=1&min_score=0.30&api_key=ABCDEF"), ",", CHAR(10)), 2)
 ```
+
 This will give you the code in D1 and the description of the code in E1
 
 </details>
@@ -156,10 +147,10 @@ No. Because Taxonic operates directly within standard Google Sheets using famili
 
 </details>
 
-## API 
+## API
 
 <details>
-<summary>How do developers integrate Taxonic into custom applications or Library Services Platforms (LSPs)?</summary>
+<summary>How can developers seamlessly integrate Taxonic's automated classification engine into their existing applications, custom software platforms, or Library Services Platforms (LSPs) using its REST API?</summary>
 
 Taxonic provides a fast RESTful API. Applications send an HTTPS `POST` request to `/v1/classify` with a JSON payload containing item metadata.
 
@@ -237,10 +228,10 @@ Yes. Taxonic natively supports structured function calling schemas (OpenAI Tools
 
 Taxonic indexes major global standards across publishing, libraries, and higher education:
 
-| Standard Key | Full Standard Name                                 | 
-| :----------- | :------------------------------------------------- | 
-| `LCSH`       | Library of Congress Subject Headings               | 
-| `THEMA`      | THEMA Subject Scheme (v1.7)                        | 
+| Standard Key | Full Standard Name                                 |
+| :----------- | :------------------------------------------------- |
+| `LCSH`       | Library of Congress Subject Headings               |
+| `THEMA`      | THEMA Subject Scheme (v1.7)                        |
 | `HECOS`      | Higher Education Classification of Subjects (v9.0) |
 | `LCC`        | Library of Congress Classification                 |
 | `UDC`        | Universal Decimal Classification                   |
@@ -276,30 +267,29 @@ Taxonic maintains pre-indexed vector stores for standard releases. When a standa
 
 You can obtain an API Key in two ways:
 
-1. **Directly:** You can get a trial key for 100 requests from the 'Trial' section of the website.  
+1. **Directly:** You can get a trial key for 200 requests from the 'Trial' section of the website.
 2. **API Marketplaces:** Subscribe through API marketplaces such as **RapidAPI**, which provides instant key generation, usage tracking, and flexible monthly subscription tiers.
 
 </details>
-
 
 <details> 
 <summary>How can I test Taxonic at no cost before purchasing?</summary>
 
 - A Taxonic API key is needed for trial. Marketplaces like RapidAPI will not need this key as they will generate their own.
-- The trial Taxonic key gives 100 credits that can be used free. These are attached to an email address and can be generated from usetaxonic.com
+- The trial Taxonic key gives 200 credits that can be used free. These are attached to an email address and can be generated from usetaxonic.com
 - This key can be used directly in spreadsheets or APIs
 - The same key can be used to get codes from any classification system
-- The keys will expire after one year. 
-- The unused balance of a key can be checked on the website in future. 
+- The keys will expire after one year.
+- The unused balance of a key can be checked on the website in future.
 
 </details>
 
 <details>
   <summary>How is usage measured and billed?</summary>
 
-Taxonic works on credits. One credit is consumed after a successful assignment of a code to a given title. 
+Taxonic works on credits. One credit is consumed after a successful assignment of a code to a given title.
 
-There are free tiers available for you to test the results in your own environment. Once you are convinced, you can purchase API keys which are valid for 10,000 or 50,000 classification calls. 
+There are free tiers available for you to test the results in your own environment. Once you are convinced, you can purchase API keys which are valid for 10,000 or 50,000 classification calls.
 
 ---
 
@@ -310,29 +300,25 @@ There are free tiers available for you to test the results in your own environme
 <details>
   <summary>We are not technical. Can you help us to categorise?</summary>
 
-Certainly. We have worked with several small public and college libraries in this mode. If you have data of your books (title and any other information about them), we can get the categorisation work done for you as a service. Please contact us with your requirements. 
+Certainly. We have worked with several small public and college libraries in this mode. If you have data of your books (title and any other information about them), we can get the categorisation work done for you as a service. Please contact us with your requirements.
 
 </details>
-
 
 <details> 
 <summary>How can you support the classification system used by us?</summary>
 
-If the definition files of your preferred classification system are publicly available, we will add them to our system on priority. If your classification system is customized to a scope (say a university or a board of education), we can make it available for you. 
+If the definition files of your preferred classification system are publicly available, we will add them to our system on priority. If your classification system is customized to a scope (say a university or a board of education), we can make it available for you.
 
 </details>
 
 <details>
-<summary>Can you extract metadata from our books / papers?</summary>
-Yes. This is a premium service that we provide to our customers. Dozens of metadata fields can be extracted by our algorithms from pdf files. This can be done on-premise, without your documents leaving your organization's folders. Please contact us for a conversation. 
+<summary>Can you extract metadata from our books and papers?</summary>
 
+Yes. This is a premium service that we provide to our customers. Dozens of metadata fields can be extracted by our algorithms from pdf files. This can be done on-premise, without your documents leaving your organization's folders. Please contact us for a conversation.
 
 </details>
 
-
-
-
-## Troubleshooting 
+## Troubleshooting
 
 <details>
 <summary>What error format does Taxonic use if an API request fails?</summary>
@@ -352,6 +338,7 @@ Taxonic returns standard HTTP error codes formatted according to the **RFC 9457 
   "request_id": "18f0d878b65f4929ac5a96d1294e72d2"
 }
 ```
+
 **Common HTTP Error Codes Reference**
 
 | Status Code             | Error Code                            | Common Cause                                           | Resolution                                                              |
