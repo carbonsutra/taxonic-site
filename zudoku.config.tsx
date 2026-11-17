@@ -3,9 +3,10 @@ import ApiPlayground from "./src/components/ApiPlayground";
 import googleAnalyticsPlugin from "./src/plugins/googleAnalytics";
 import Onboarding from "./src/components/Onboarding";
 import Footer from "./src/components/Footer";
+import taxonicStructuredDataPlugin from "./src/plugins/taxonicStructuredData";
 
 const config: ZudokuConfig = {
-  plugins: [googleAnalyticsPlugin],
+  plugins: [googleAnalyticsPlugin, taxonicStructuredDataPlugin],
 
   header: {
     themeSwitcher: {
@@ -31,6 +32,7 @@ const config: ZudokuConfig = {
       "THEMA subject code generator",
       "LCSH auto-cataloging software",
       "HECoS subject mapping API",
+      "BISAC",
       "Book metadata enrichment tool",
       "AI library cataloging engine",
       "Google Sheets classification formula",

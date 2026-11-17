@@ -35,8 +35,8 @@ export default function LandingPage() {
               <p className="mb-2 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base sm:leading-8">
                 Classifying books, research papers, and course materials is
                 crucial for content discoverability. However, manual tagging
-                takes 15 to 45 minutes per title. Taxonic solves this bottleneck
-                completely. It is an automated classification engine that
+                takes 15 to 45 minutes per title. Taxonic solves this
+                bottleneck. It is an automated classification engine that
                 converts raw text like book titles, syllabi, and learning assets
                 into official subject codes within a single second.
               </p>
@@ -45,7 +45,8 @@ export default function LandingPage() {
                 Taxonic uses AI to understand the actual meaning of your
                 content, not just keywords. It then maps unstructured text
                 directly to key global standards, including Library of Congress
-                Subject Headings (LCSH), THEMA (v1.7), and HECoS (v9.0).
+                Subject Headings (LCSH), LCC, UDC, BISAC, THEMA (v1.7), and
+                HECoS (v9.0).
               </p>
 
               <p className="mb-2 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base sm:leading-8">
