@@ -76,7 +76,7 @@ const taxonicStructuredData = {
         price: "0",
         priceCurrency: "USD",
         description:
-          "Free trial tier with 100 classification credits available via usetaxonic.com.",
+          "Free trial tier with 200 classification credits available via usetaxonic.com.",
         url: "https://usetaxonic.com/api-playground",
       },
     },
